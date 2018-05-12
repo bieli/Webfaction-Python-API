@@ -3,6 +3,9 @@ Webfaction-Python-API
 
 [![Build Status](https://travis-ci.org/bieli/Webfaction-Python-API.svg?branch=master)](http://travis-ci.org/bieli/google_rank_checker)
 
+[![codecov](https://codecov.io/gh/bieli/Webfaction-Python-API/branch/master/graph/badge.svg)](https://codecov.io/gh/bieli/Webfaction-Python-API)
+
+
 Webfaction API client with command line tool for calling API methods.
 Python 2 and 3 API is supported.
 
