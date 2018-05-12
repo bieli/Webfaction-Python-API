@@ -9,7 +9,6 @@ virtualenv:
 python:
   - "2.7"
   - "3.4"
-  # PyPy versions
   - "pypy2.7"
   - "pypy3.5"
 install:
@@ -21,7 +20,6 @@ install:
  - pip install nose -U
  - pip install tox-travis
  - pip install codecov -U
- #- pip install -U --process-dependency-links -e .[develop]
  - pip install --upgrade pytest
 script:
   - pip install .
@@ -29,8 +27,5 @@ script:
   - sh run_travis.sh
 after_success:
   - codecov
-#after_success:
-#  - export CODECOV_TOKEN=":7da40838-6b2f-4442-9b5e-df8bfbe2b5be"
-#  - bash < (curl -s https://codecov.io/bash)
 notifications:
   - email: false
