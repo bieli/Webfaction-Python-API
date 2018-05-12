@@ -4,4 +4,4 @@ httplib
 pyflakes
 coverage
 nose
-
+virtualenv
