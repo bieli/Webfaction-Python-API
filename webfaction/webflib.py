@@ -1,4 +1,3 @@
-
 # pylint: disable-msg=R0913,W0511,E1103
 
 '''
@@ -10,10 +9,16 @@ WebFaction XML-RPC API library
 
 '''
 
-import xmlrpclib
+import sys
 import logging
 import os.path
-import httplib
+
+if sys.version_info[0] > 2:
+    from xmlrpc import client as xmlrpclib 
+    from http import client as httplib
+else:
+    import xmlrpclib 
+    import httplib
 
 from configobj import ConfigObj
 
@@ -27,7 +32,9 @@ class WebFactionDBUser(object):
                 
 API_URL = 'https://api.webfaction.com/'
 CONF = os.path.expanduser('~/.webfrc')
-class WebFactionXmlRpc(object):
+
+
+class WebFactionXmlRpc:
 
     '''WebFaction XML-RPC server proxy class'''
 
@@ -302,10 +309,10 @@ class WebFactionXmlRpc(object):
         else:
             https = False
         subdomains = subdomains.split(',')
-        print subdomains
+        print(subdomains)
         #XXX: Limitation of only one site_app
         site_apps = site_apps.split(',')
-        print site_apps
+        print(site_apps)
         try:
             result = self.server.create_website(
                     self.session_id,
@@ -419,7 +426,7 @@ class WebFactionXmlRpc(object):
                     ham_to_learn_folder
                     )
             self.log.debug(result)
-            print "Password for the new mailbox is: %s" % result['password']
+            print("Password for the new mailbox is: {}".format(result['password']))
         except xmlrpclib.Fault:
             self.log.exception("Error creating mailbox")
             return 1
@@ -490,7 +497,7 @@ class WebFactionXmlRpc(object):
                     self.session_id,
                     cmd
                     )
-            print result
+            print(result)
         except xmlrpclib.Fault:
             self.log.exception("Error running system command %s", cmd)
             return 1
@@ -526,3 +533,4 @@ class WebFactionXmlRpc(object):
         except xmlrpclib.Fault:
             self.log.exception("Error listing bandwidth usage")
             return 1
+
