@@ -1,3 +1,10 @@
 *.pyc
 dist
 build
+.coverage
+coverage.bash
+coverage.xml
+webfaction-cli
+*.py~
+*/*.py~
+*/*/*.py~

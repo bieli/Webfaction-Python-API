@@ -43,13 +43,14 @@ class WebFactionXmlRpc:
     def __init__(self, user=None, password=None, machine=None):
         self.log = logging.getLogger("webf")
         self.session_id = None
+        self.account = None
         self.server = None
         if not (user and password):
             try:
                 user, password = WebFactionXmlRpc.get_config()
             except NotImplementedError as e:
-                self.log.error(
-                    "You must set a username and password. Either by passing them to __init__ or setting up your config file")
+                self.log.error("You must set a username and password. "
+                               "Either by passing them to __init__ or setting up your config file")
                 raise e
 
         self.username = user
@@ -81,10 +82,8 @@ class WebFactionXmlRpc:
             http_proxy = None
         self.server = xmlrpclib.Server(API_URL, transport=http_proxy)
         extra_args = [self.machine] if self.machine else []
-        self.session_id, account = self.server.login(self.username, self.password, *extra_args)
-
-        self.log.debug("self.session_id %s account %s", self.session_id,
-                       account)
+        self.session_id, self.account = self.server.login(self.username, self.password, *extra_args)
+        self.log.debug("self.session_id: %s self.account: %s", self.session_id, self.account)
 
     def create_app(self, app_name, app_type, autostart, extra_info):
         """Create new application"""
