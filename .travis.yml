@@ -19,6 +19,8 @@ install:
  - sudo apt-get update
  - pip install --upgrade pip setuptools
  - pip install --upgrade pip virtualenv
+ - pip install coverage -U
+ - pip install nose -U
  - pip install tox-travis
  #- pip install -U --process-dependency-links -e .[develop]
  - pip install --upgrade pytest

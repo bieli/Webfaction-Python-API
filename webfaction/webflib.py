@@ -13,7 +13,10 @@ import sys
 import logging
 import os.path
 
-from configobj import ConfigObj
+try:
+    from configobj import ConfigObj
+except:
+    pass
 
 if sys.version_info[0] > 2:
     from xmlrpc import client as xmlrpclib
@@ -25,7 +28,6 @@ else:
 
 class WebFactionDBUser:
     def __init__(self, username, password, db_type):
-        super(WebFactionDBUser, self).__init__()
         self.username = username
         self.password = password
         self.db_type = db_type
