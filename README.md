@@ -1,4 +1,4 @@
-Webfaction-Python-API
+Webfaction-Python-API [Travis CI](https://travis-ci.org/bieli/Webfaction-Python-API.svg?branch=master)
 ---------------------
 
 Webfaction Python 2 and 3 API is supported.

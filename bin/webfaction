@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# pylint: disable-msg=W0142
-'''
+# pylint: disable=W0142,E501
+"""
 
 cli.py
 ======
@@ -12,11 +12,10 @@ Author: Marcin Bielak <marcin.bieli@gmail.com>
 
 License : MIT
 
-'''
+"""
 
 __docformat__ = 'epytext'
 __revision__ = '$Revision:  $'[11:-1].strip()
-
 
 import sys
 import logging
@@ -27,7 +26,6 @@ from webfaction import webflib
 
 
 class WebFaction(object):
-
     '''``WebFaction`` class'''
 
     def __init__(self):
@@ -59,9 +57,9 @@ class WebFaction(object):
         if self.options.webfaction_version:
             return webfaction_version()
 
-        #Go through list of options in ``group_api`` and execute
-        #activated callable for enabled option
-        #Looks a bit magic, but saves a ton of if/then branching
+        # Go through list of options in ``group_api`` and execute
+        # activated callable for enabled option
+        # Looks a bit magic, but saves a ton of if/then branching
         for action in [p for p in self.group_api.option_list]:
             action = str(action)[2:].replace('-', '_')
             if getattr(self.options, action):
@@ -85,171 +83,171 @@ class WebFaction(object):
         usage = 'usage: %prog [options]'
         opt_parser = optparse.OptionParser(usage=usage)
         group_api = optparse.OptionGroup(opt_parser,
-                'WebFaction Commands',
-                'Options for calling WebFaction XML-RPC API methods')
+                                         'WebFaction Commands',
+                                         'Options for calling WebFaction XML-RPC API methods')
 
         group_api.add_option('--create-app',
-                action='store',
-                dest='create_app',
-                nargs=4,
-                help='Create application',
-                metavar='NAME TYPE AUTOSTART EXTRA_INFO'
-                )
+                             action='store',
+                             dest='create_app',
+                             nargs=4,
+                             help='Create application',
+                             metavar='NAME TYPE AUTOSTART EXTRA_INFO'
+                             )
 
         group_api.add_option('--delete-app',
-                action='store',
-                dest='delete_app',
-                help='Delete application',
-                metavar='NAME'
-                )
+                             action='store',
+                             dest='delete_app',
+                             help='Delete application',
+                             metavar='NAME'
+                             )
 
         group_api.add_option('--create-cronjob',
-                action='store',
-                dest='create_cronjob',
-                help='Create cronjob',
-                metavar='CRONJOB'
-                )
+                             action='store',
+                             dest='create_cronjob',
+                             help='Create cronjob',
+                             metavar='CRONJOB'
+                             )
 
         group_api.add_option('--delete-cronjob',
-                action='store',
-                dest='delete_cronjob',
-                help='Delete cronjob',
-                metavar='CRONJOB'
-                )
+                             action='store',
+                             dest='delete_cronjob',
+                             help='Delete cronjob',
+                             metavar='CRONJOB'
+                             )
 
         group_api.add_option('--create-db',
-                action='store',
-                dest='create_db',
-                nargs=3,
-                help='Create Database',
-                metavar='NAME DB_TYPE PASSWORD'
-                )
+                             action='store',
+                             dest='create_db',
+                             nargs=3,
+                             help='Create Database',
+                             metavar='NAME DB_TYPE PASSWORD'
+                             )
 
         group_api.add_option('--delete-db',
-                action='store',
-                dest='delete_db',
-                nargs=2,
-                help='Delete Database',
-                metavar='NAME DB_TYPE'
-                )
+                             action='store',
+                             dest='delete_db',
+                             nargs=2,
+                             help='Delete Database',
+                             metavar='NAME DB_TYPE'
+                             )
 
         group_api.add_option('--create-domain',
-                action='store',
-                dest='create_domain',
-                help='Create domain',
-                nargs=2,
-                metavar='DOMAIN SUBDOMAIN'
-                )
+                             action='store',
+                             dest='create_domain',
+                             help='Create domain',
+                             nargs=2,
+                             metavar='DOMAIN SUBDOMAIN'
+                             )
 
         group_api.add_option('--create-website',
-                action='store',
-                dest='create_website',
-                help='Create website',
-                nargs=5,
-                metavar='NAME IP HTTPS SUBDOMAINS *SITE_APPS'
-                )
+                             action='store',
+                             dest='create_website',
+                             help='Create website',
+                             nargs=5,
+                             metavar='NAME IP HTTPS SUBDOMAINS *SITE_APPS'
+                             )
 
         group_api.add_option('--create-dns-override',
-                action='store',
-                dest='create_dns_override',
-                help='Create DNS override',
-                nargs=6,
-                metavar='DOMAIN A_IP CNAME MX_NAME MX_PRIORITY SPF_RECORD'
-                )
+                             action='store',
+                             dest='create_dns_override',
+                             help='Create DNS override',
+                             nargs=6,
+                             metavar='DOMAIN A_IP CNAME MX_NAME MX_PRIORITY SPF_RECORD'
+                             )
 
         group_api.add_option('--delete-dns-override',
-                action='store',
-                dest='delete_dns_override',
-                help='Delete DNS override',
-                nargs=6,
-                metavar='DOMAIN A_IP CNAME MX_NAME MX_PRIORITY SPF_RECORD'
-                )
+                             action='store',
+                             dest='delete_dns_override',
+                             help='Delete DNS override',
+                             nargs=6,
+                             metavar='DOMAIN A_IP CNAME MX_NAME MX_PRIORITY SPF_RECORD'
+                             )
 
         group_api.add_option('--create-email',
-                action='store',
-                dest='create_email',
-                help='Create email address',
-                nargs=6,
-                metavar='EMAIL_ADDRESS TARGETS AR_ON AR_SUBJECT AR_MSG AR_FROM'
-                )
+                             action='store',
+                             dest='create_email',
+                             help='Create email address',
+                             nargs=6,
+                             metavar='EMAIL_ADDRESS TARGETS AR_ON AR_SUBJECT AR_MSG AR_FROM'
+                             )
 
         group_api.add_option('--delete-email',
-                action='store',
-                dest='delete_email',
-                help='Delete email address',
-                metavar='EMAIL_ADDRESS'
-                )
+                             action='store',
+                             dest='delete_email',
+                             help='Delete email address',
+                             metavar='EMAIL_ADDRESS'
+                             )
 
         group_api.add_option('--create-mailbox',
-                action='store',
-                dest='create_mailbox',
-                help='Create mailbox',
-                nargs=5,
-                metavar='MBOX_NAME SPAM_PROT SHARE SPAM_LEARN HAM_LEARN'
-                )
+                             action='store',
+                             dest='create_mailbox',
+                             help='Create mailbox',
+                             nargs=5,
+                             metavar='MBOX_NAME SPAM_PROT SHARE SPAM_LEARN HAM_LEARN'
+                             )
 
         group_api.add_option('--delete-mailbox',
-                action='store',
-                dest='delete_mailbox',
-                help='Delete mailbox',
-                metavar='MBOX_NAME'
-                )
+                             action='store',
+                             dest='delete_mailbox',
+                             help='Delete mailbox',
+                             metavar='MBOX_NAME'
+                             )
 
         group_api.add_option('--list-disk-usage',
-                action='store',
-                dest='list_disk_usage',
-                help='List disk usage',
-                nargs=0,
-                metavar=''
-                )
+                             action='store',
+                             dest='list_disk_usage',
+                             help='List disk usage',
+                             nargs=0,
+                             metavar=''
+                             )
 
         group_api.add_option('--list-bandwidth-usage',
-                action='store',
-                dest='list_bandwidth_usage',
-                help='List bandwidth usage',
-                nargs=0,
-                metavar=''
-                )
+                             action='store',
+                             dest='list_bandwidth_usage',
+                             help='List bandwidth usage',
+                             nargs=0,
+                             metavar=''
+                             )
 
         group_api.add_option('--list-machines',
-                action='store',
-                dest='list_machines',
-                help='List machines',
-                nargs=0,
-                metavar=''
-                )
+                             action='store',
+                             dest='list_machines',
+                             help='List machines',
+                             nargs=0,
+                             metavar=''
+                             )
 
         group_api.add_option('--set-apache-acl',
-                action='store',
-                dest='set_apache_acl',
-                nargs=3,
-                help='Set Apache ACL',
-                metavar='PATHS PERMS RECURSIVE'
-                )
+                             action='store',
+                             dest='set_apache_acl',
+                             nargs=3,
+                             help='Set Apache ACL',
+                             metavar='PATHS PERMS RECURSIVE'
+                             )
 
         group_api.add_option('--system',
-                action='store',
-                dest='system',
-                help='Run system command.',
-                metavar='CMD'
-                )
+                             action='store',
+                             dest='system',
+                             help='Run system command.',
+                             metavar='CMD'
+                             )
         group_api.add_option('--write-file',
-                action='store',
-                dest='write_file',
-                help='Write file',
-                metavar='FILENAME STRING MODE'
-                )
+                             action='store',
+                             dest='write_file',
+                             help='Write file',
+                             metavar='FILENAME STRING MODE'
+                             )
 
         self.group_api = group_api
         opt_parser.add_option_group(group_api)
 
         # Common options
         opt_parser.add_option('--version', action='store_true', dest=
-                              'webfaction_version', default=False, help=
+        'webfaction_version', default=False, help=
                               "Show this program's version and exit.")
 
         opt_parser.add_option('--debug', action='store_true', dest=
-                              'debug', default=False, help=
+        'debug', default=False, help=
                               'Show debugging information')
 
         return opt_parser
@@ -259,6 +257,7 @@ def webfaction_version():
     '''Print webfaction version'''
     print(VERSION)
 
+
 def main():
     '''Let's do it.'''
     client = WebFaction()
@@ -267,4 +266,3 @@ def main():
 
 if __name__ == '__main__':
     sys.exit(main())
-

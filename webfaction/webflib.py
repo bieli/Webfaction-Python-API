@@ -1,17 +1,19 @@
-# pylint: disable-msg=R0913,W0511,E1103
+# pylint: disable=R0913,W0511,E1103,E501
 
-'''
+"""
 
 webflib
 =======
 
 WebFaction XML-RPC API library
 
-'''
+"""
 
 import sys
 import logging
 import os.path
+
+from configobj import ConfigObj
 
 if sys.version_info[0] > 2:
     from xmlrpc import client as xmlrpclib
@@ -20,10 +22,8 @@ else:
     import xmlrpclib
     import httplib
 
-from configobj import ConfigObj
 
-
-class WebFactionDBUser(object):
+class WebFactionDBUser:
     def __init__(self, username, password, db_type):
         super(WebFactionDBUser, self).__init__()
         self.username = username
@@ -36,7 +36,7 @@ CONF = os.path.expanduser('~/.webfrc')
 
 
 class WebFactionXmlRpc:
-    '''WebFaction XML-RPC server proxy class'''
+    """WebFaction XML-RPC server proxy class"""
 
     def __init__(self, user=None, password=None, machine=None):
         self.log = logging.getLogger("webf")
@@ -57,22 +57,22 @@ class WebFactionXmlRpc:
 
     @staticmethod
     def get_config():
-        '''Get configuration file from user's directory'''
+        """Get configuration file from user's directory"""
         if not os.path.exists(CONF):
-            err = u"\n".join([
-                u"  Set your username/password in %s" % CONF,
-                u"  The format is:",
-                u"      username=<username>",
-                u"      password=<password>",
+            err = "\n".join([
+                "  Set your username/password in %s" % CONF,
+                "  The format is:",
+                "      username=<username>",
+                "      password=<password>",
             ])
             raise NotImplementedError(err)
         config = ConfigObj(CONF)
         username = config['username']
         password = config['password']
-        return (username, password)
+        return username, password
 
     def login(self):
-        '''Login to WebFaction and get a session_id'''
+        """Login to WebFaction and get a session_id"""
         try:
             http_proxy = os.environ['http_proxy']
         except KeyError:
@@ -85,7 +85,7 @@ class WebFactionXmlRpc:
                        account)
 
     def create_app(self, app_name, app_type, autostart, extra_info):
-        '''Create new application'''
+        """Create new application"""
         if extra_info.lower() == 'none':
             extra_info = ''
         try:
@@ -106,7 +106,7 @@ class WebFactionXmlRpc:
             return False
 
     def delete_app(self, app_name):
-        '''Create new application'''
+        """Create new application"""
         try:
             result = self.server.delete_app(
                 self.session_id,
@@ -118,9 +118,9 @@ class WebFactionXmlRpc:
             return 1
 
     def list_apps(self):
-        '''List all existing webfaction apps
+        """List all existing webfaction apps
         https://docs.webfaction.com/xmlrpc-api/apiref.html#method-list_apps
-        Returns a list of dicts'''
+        Returns a list of dicts"""
         try:
             return self.server.list_apps(self.session_id)
         except xmlrpclib.Fault:
@@ -128,7 +128,7 @@ class WebFactionXmlRpc:
             return []
 
     def delete_db(self, name, db_type):
-        '''
+        """
         Delete database
 
         @param name: name of database
@@ -136,8 +136,8 @@ class WebFactionXmlRpc:
 
         @param db_type: mysql or postgres
         @type db_type: string
-        '''
-        # XXX: Validate db_type
+        """
+        # TODO: Validate db_type
         try:
             result = self.server.delete_db(
                 self.session_id,
@@ -150,7 +150,7 @@ class WebFactionXmlRpc:
             return 1
 
     def create_db(self, name, db_type, password):
-        '''
+        """
         Create database
 
         @param name: name of database
@@ -164,10 +164,9 @@ class WebFactionXmlRpc:
 
         @returns: Nothing
         @rtype: None on success or 1 on failure
-        
-        '''
-        # XXX: Validate db_type
-        # XXX: Use interactive method to get password?
+        """
+        # TODO: Validate db_type
+        # TODO: Use interactive method to get password?
         try:
             result = self.server.create_db(
                 self.session_id,
@@ -240,7 +239,7 @@ class WebFactionXmlRpc:
             return False
 
     def create_cronjob(self, line):
-        '''
+        """
         Create a cronjob
 
         @param line: A line you want in your cronjob
@@ -248,8 +247,7 @@ class WebFactionXmlRpc:
 
         @returns: Nothing
         @rtype: None on success or 1 on failure
-        
-        '''
+        """
         try:
             result = self.server.create_cronjob(
                 self.session_id,
@@ -261,7 +259,7 @@ class WebFactionXmlRpc:
             return 1
 
     def delete_cronjob(self, line):
-        '''
+        """
         Delete a cronjob
 
         @param line: A line you want removed from your cronjob
@@ -269,8 +267,7 @@ class WebFactionXmlRpc:
 
         @returns: Nothing
         @rtype: None on success or 1 on failure
-        
-        '''
+        """
         try:
             result = self.server.delete_cronjob(
                 self.session_id,
@@ -283,7 +280,7 @@ class WebFactionXmlRpc:
 
     # pylint: disable-msg=C0103
     def create_website(self, website_name, ip, https, subdomains, site_apps):
-        '''
+        """
         Create a website
 
         @param website_name: Name of website
@@ -298,20 +295,19 @@ class WebFactionXmlRpc:
         @param subdomains: List of subdomains for this website
         @type subdomains: list
 
-        @param site_apps: 
+        @param site_apps:
         @type site_apps: list
 
         @returns: Nothing
         @rtype: None on success or 1 on failure
-        
-        '''
+        """
         if https.lower() == 'true':
             https = True
         else:
             https = False
         subdomains = subdomains.split(',')
         print(subdomains)
-        # XXX: Limitation of only one site_app
+        # TODO: Limitation of only one site_app
         site_apps = site_apps.split(',')
         print(site_apps)
         try:
@@ -331,19 +327,18 @@ class WebFactionXmlRpc:
     def create_email(self, email_address, targets, autoresponder_on=False,
                      autoresponder_subject='', autoresponder_message='',
                      autoresponder_from=''):
-        '''
+        """
         Create an email address for a mailbox
 
-        @param email_address: 
+        @param email_address:
         @type email_address: string
 
         @param targets: mailbox names
         @type targets: string
- 
+
         @returns: Success code
         @rtype: None on success or 1 on failure
-        
-        '''
+        """
         if autoresponder_on.lower() == 'true':
             autoresponder_on = True
         else:
@@ -370,7 +365,7 @@ class WebFactionXmlRpc:
             return 1
 
     def delete_email(self, email_address):
-        '''
+        """
         Delete an email address
 
         @param email_address: An email address you want removed from a mailbox
@@ -378,8 +373,7 @@ class WebFactionXmlRpc:
 
         @returns: Success code
         @rtype: None on success or 1 on failure
-        
-        '''
+        """
         try:
             result = self.server.delete_email(
                 self.session_id,
@@ -393,7 +387,7 @@ class WebFactionXmlRpc:
     def create_mailbox(self, mailbox, enable_spam_protection=True, share=False,
                        spam_to_learn_folder='spam_to_learn',
                        ham_to_learn_folder='ham_to_learn'):
-        '''
+        """
         Delete a mailbox
 
         @param mailbox: Mailbox name you want to create
@@ -407,15 +401,13 @@ class WebFactionXmlRpc:
 
         @returns: Success code
         @rtype: None on success or 1 on failure
-        
-        '''
+        """
         if enable_spam_protection.lower() == 'true':
             enable_spam_protection = True
         elif enable_spam_protection.lower() == 'false':
             enable_spam_protection = False
         else:
-            self.log.error( \
-                "Error: enable_spam_protection must be True or False")
+            self.log.error("Error: enable_spam_protection must be True or False")
             return 1
         try:
             result = self.server.create_mailbox(
@@ -433,7 +425,7 @@ class WebFactionXmlRpc:
             return 1
 
     def delete_mailbox(self, mailbox):
-        '''
+        """
         Delete a mailbox
 
         @param mailbox: A mailbox name you wanted deleted
@@ -441,8 +433,7 @@ class WebFactionXmlRpc:
 
         @returns: Success code
         @rtype: None on success or 1 on failure
-        
-        '''
+        """
         try:
             result = self.server.delete_mailbox(
                 self.session_id,
@@ -454,7 +445,7 @@ class WebFactionXmlRpc:
             return 1
 
     def set_apache_acl(self, paths, permission='rwx', recursive=False):
-        '''
+        """
         Set Apache ACL
 
         @param paths:
@@ -468,8 +459,7 @@ class WebFactionXmlRpc:
 
         @returns: Success code
         @rtype: None on success or 1 on failure
-        
-        '''
+        """
         try:
             result = self.server.set_apache_acl(
                 self.session_id,
@@ -483,7 +473,7 @@ class WebFactionXmlRpc:
             return 1
 
     def system(self, cmd):
-        '''
+        """
         Runs a Linux command in your homedir and prints the result
 
         @param cmd: Command you want to run
@@ -491,8 +481,7 @@ class WebFactionXmlRpc:
 
         @returns: Success code
         @rtype: None on success or 1 on failure
-        
-        '''
+        """
         try:
             result = self.server.system(
                 self.session_id,
@@ -504,13 +493,13 @@ class WebFactionXmlRpc:
             return 1
 
     def list_disk_usage(self, debug=False):
-        '''
+        """
         List disk space usage statistics about your account
         http://docs.webfaction.com/xmlrpc-api/apiref.html#method-list_disk_usage
-        
+
         @returns: Structure containing all disk usage members (see link for details)
         @rtype: None on success or 1 on failure
-        '''
+        """
         try:
             result = self.server.list_disk_usage(self.session_id)
             self.log.debug(result)
@@ -520,13 +509,13 @@ class WebFactionXmlRpc:
             return 1
 
     def list_bandwidth_usage(self, debug=False):
-        '''
+        """
         List bandwidth usage statistics for your websites
         http://docs.webfaction.com/xmlrpc-api/apiref.html#method-list_bandwidth_usage
-        
+
         @returns: Structure containing two members, daily and monthly
         @rtype: None on success or 1 on failure
-        '''
+        """
         try:
             result = self.server.list_bandwidth_usage(self.session_id)
             self.log.debug(result)
@@ -536,14 +525,14 @@ class WebFactionXmlRpc:
             return 1
 
     def list_machines(self, debug=False):
-        '''
-        Get information about the account’s machines. 
+        """
+        Get information about the account's machines.
         This method returns an array of structs with the following key-value pairs
         https://docs.webfaction.com/xmlrpc-api/apiref.html#method-list_machines
-        
+
         @returns: Structure returns an array of structs with the following keys: name, operating_system, location, id
         @rtype: None on success or 1 on failure
-        '''
+        """
         try:
             result = self.server.list_machines(self.session_id)
             self.log.debug(result)

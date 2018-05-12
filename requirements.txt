@@ -1,4 +1,7 @@
 configobj>=5.0.2
 #xmlrpc
 httplib
+pyflakes
+coverage
+nose
 

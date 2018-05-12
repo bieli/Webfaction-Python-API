@@ -1,5 +1,5 @@
-
-'''
+# pylint: disable=E501
+"""
 webf
 ====
 
@@ -11,7 +11,7 @@ Description
 -----------
 webfaction is a command-line client and library for webfaction.com's XML-RPC API
 
-'''
+"""
 
 __version__ = '1.1'
 __docformat__ = 'epytext'
@@ -19,4 +19,3 @@ __author__ = 'Tom Clancy <tclancy>@<gmail.com>'
 __contributors__ = 'Rob Cakebread <rob>@<cakebread.info>, Patrick Robertson <webfaction-python>@<patjack.uk>'
 __copyright__ = '(C) 2008 Rob Cakebread'
 __license__ = 'MIT'
-
