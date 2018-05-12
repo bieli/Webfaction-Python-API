@@ -7,7 +7,6 @@ addons:
 virtualenv:
   system_site_packages: true
 python:
-  - "2.6"
   - "2.7"
   - "3.4"
   - "3.5"
@@ -20,6 +19,7 @@ install:
  - pip install --upgrade pip setuptools
  - pip install --upgrade pip virtualenv
  - pip install coverage -U
+ - pip install pyflakes -U
  - pip install nose -U
  - pip install tox-travis
  #- pip install -U --process-dependency-links -e .[develop]

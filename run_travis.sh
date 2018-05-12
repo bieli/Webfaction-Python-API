@@ -2,4 +2,4 @@
 
 python -m unittest discover ./tests/ "*test.py"
 nosetests tests -v --with-coverage
-python3 -m pyflakes
+python -m pyflakes
