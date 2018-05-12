@@ -19,7 +19,7 @@ git clone https://github.com/bieli/Webfaction-Python-API.git
 
 2) create configuration file ~/.webfrc with your Webfaction's username and password
 ```bash
-cat << 'EOF' > ~/.webfrc1
+cat << 'EOF' > ~/.webfrc
 username="username"
 password="strong_password"
 
