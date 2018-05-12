@@ -195,6 +195,22 @@ class WebFaction(object):
                 metavar='MBOX_NAME'
                 )
 
+        group_api.add_option('--list-disk-usage',
+                action='store', 
+                dest='list_disk_usage',
+                help='List disk usage',
+                nargs=0,                
+                metavar=''
+                )
+
+        group_api.add_option('--list-bandwidth-usage',
+                action='store', 
+                dest='list_bandwidth_usage',
+                help='List bandwidth usage',
+                nargs=0,                
+                metavar=''
+                )
+
         group_api.add_option('--set-apache-acl',
                 action='store', 
                 dest='set_apache_acl',

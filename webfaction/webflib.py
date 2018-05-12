@@ -502,7 +502,7 @@ class WebFactionXmlRpc:
             self.log.exception("Error running system command %s", cmd)
             return 1
 
-    def list_disk_usage(self):
+    def list_disk_usage(self, debug=False):
         '''
         List disk space usage statistics about your account
         http://docs.webfaction.com/xmlrpc-api/apiref.html#method-list_disk_usage
@@ -518,7 +518,7 @@ class WebFactionXmlRpc:
             self.log.exception("Error listing disk usage")
             return 1
 
-    def list_bandwidth_usage(self):
+    def list_bandwidth_usage(self, debug=False):
         '''
         List bandwidth usage statistics for your websites
         http://docs.webfaction.com/xmlrpc-api/apiref.html#method-list_bandwidth_usage
