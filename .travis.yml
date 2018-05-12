@@ -9,7 +9,6 @@ virtualenv:
 python:
   - "2.7"
   - "3.4"
-  - "3.5"
   # PyPy versions
   - "pypy2.7"
   - "pypy3.5"
