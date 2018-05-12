@@ -209,10 +209,12 @@ class WebFactionXmlRpc:
             self.log.exception("Error creating database user")
             return None
 
-    def delete_db_user(self, db_user):
+    def _check_db_user_instance(self, db_user):
         if not isinstance(db_user, WebFactionDBUser):
             raise ValueError("db_user must be an instance of WebFactionDBUser")
 
+    def delete_db_user(self, db_user):
+        self._check_db_user_instance(db_user)
         try:
             self.server.delete_db_user(
                 self.session_id,
@@ -225,8 +227,7 @@ class WebFactionXmlRpc:
             return False
 
     def grant_db_permissions(self, db_user, database):
-        if not isinstance(db_user, WebFactionDBUser):
-            raise ValueError("db_user must be an instance of WebFactionDBUser")
+        self._check_db_user_instance(db_user)
 
         try:
             self.server.grant_db_permissions(

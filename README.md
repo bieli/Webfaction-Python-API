@@ -13,7 +13,7 @@ TODO
 -----
 - [X] support for Pytohn 3
 - [X] implement support for list usage disks and bandwidth
-- [_] adding Travis CI build in multiple Python versions
+- [X] adding Travis CI build in multiple Python versions
 - [_] unit tests 
 - [_] verify compatibility for Python 2 and Python 3
 
