@@ -89,7 +89,7 @@ class WebFaction(object):
                 'Options for calling WebFaction XML-RPC API methods')
 
         group_api.add_option('--create-app',
-                action='store', 
+                action='store',
                 dest='create_app',
                 nargs=4,
                 help='Create application',
@@ -97,28 +97,28 @@ class WebFaction(object):
                 )
 
         group_api.add_option('--delete-app',
-                action='store', 
+                action='store',
                 dest='delete_app',
                 help='Delete application',
                 metavar='NAME'
                 )
 
         group_api.add_option('--create-cronjob',
-                action='store', 
+                action='store',
                 dest='create_cronjob',
                 help='Create cronjob',
                 metavar='CRONJOB'
                 )
 
         group_api.add_option('--delete-cronjob',
-                action='store', 
+                action='store',
                 dest='delete_cronjob',
                 help='Delete cronjob',
                 metavar='CRONJOB'
                 )
 
         group_api.add_option('--create-db',
-                action='store', 
+                action='store',
                 dest='create_db',
                 nargs=3,
                 help='Create Database',
@@ -126,7 +126,7 @@ class WebFaction(object):
                 )
 
         group_api.add_option('--delete-db',
-                action='store', 
+                action='store',
                 dest='delete_db',
                 nargs=2,
                 help='Delete Database',
@@ -134,7 +134,7 @@ class WebFaction(object):
                 )
 
         group_api.add_option('--create-domain',
-                action='store', 
+                action='store',
                 dest='create_domain',
                 help='Create domain',
                 nargs=2,
@@ -142,7 +142,7 @@ class WebFaction(object):
                 )
 
         group_api.add_option('--create-website',
-                action='store', 
+                action='store',
                 dest='create_website',
                 help='Create website',
                 nargs=5,
@@ -150,7 +150,7 @@ class WebFaction(object):
                 )
 
         group_api.add_option('--create-dns-override',
-                action='store', 
+                action='store',
                 dest='create_dns_override',
                 help='Create DNS override',
                 nargs=6,
@@ -158,7 +158,7 @@ class WebFaction(object):
                 )
 
         group_api.add_option('--delete-dns-override',
-                action='store', 
+                action='store',
                 dest='delete_dns_override',
                 help='Delete DNS override',
                 nargs=6,
@@ -166,7 +166,7 @@ class WebFaction(object):
                 )
 
         group_api.add_option('--create-email',
-                action='store', 
+                action='store',
                 dest='create_email',
                 help='Create email address',
                 nargs=6,
@@ -174,14 +174,14 @@ class WebFaction(object):
                 )
 
         group_api.add_option('--delete-email',
-                action='store', 
+                action='store',
                 dest='delete_email',
                 help='Delete email address',
                 metavar='EMAIL_ADDRESS'
                 )
 
         group_api.add_option('--create-mailbox',
-                action='store', 
+                action='store',
                 dest='create_mailbox',
                 help='Create mailbox',
                 nargs=5,
@@ -189,30 +189,38 @@ class WebFaction(object):
                 )
 
         group_api.add_option('--delete-mailbox',
-                action='store', 
+                action='store',
                 dest='delete_mailbox',
                 help='Delete mailbox',
                 metavar='MBOX_NAME'
                 )
 
         group_api.add_option('--list-disk-usage',
-                action='store', 
+                action='store',
                 dest='list_disk_usage',
                 help='List disk usage',
-                nargs=0,                
+                nargs=0,
                 metavar=''
                 )
 
         group_api.add_option('--list-bandwidth-usage',
-                action='store', 
+                action='store',
                 dest='list_bandwidth_usage',
                 help='List bandwidth usage',
-                nargs=0,                
+                nargs=0,
+                metavar=''
+                )
+
+        group_api.add_option('--list-machines',
+                action='store',
+                dest='list_machines',
+                help='List machines',
+                nargs=0,
                 metavar=''
                 )
 
         group_api.add_option('--set-apache-acl',
-                action='store', 
+                action='store',
                 dest='set_apache_acl',
                 nargs=3,
                 help='Set Apache ACL',
@@ -220,13 +228,13 @@ class WebFaction(object):
                 )
 
         group_api.add_option('--system',
-                action='store', 
+                action='store',
                 dest='system',
                 help='Run system command.',
                 metavar='CMD'
                 )
         group_api.add_option('--write-file',
-                action='store', 
+                action='store',
                 dest='write_file',
                 help='Write file',
                 metavar='FILENAME STRING MODE'
@@ -234,7 +242,7 @@ class WebFaction(object):
 
         self.group_api = group_api
         opt_parser.add_option_group(group_api)
-        
+
         # Common options
         opt_parser.add_option('--version', action='store_true', dest=
                               'webfaction_version', default=False, help=

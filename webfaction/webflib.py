@@ -14,10 +14,10 @@ import logging
 import os.path
 
 if sys.version_info[0] > 2:
-    from xmlrpc import client as xmlrpclib 
+    from xmlrpc import client as xmlrpclib
     from http import client as httplib
 else:
-    import xmlrpclib 
+    import xmlrpclib
     import httplib
 
 from configobj import ConfigObj
@@ -29,13 +29,13 @@ class WebFactionDBUser(object):
         self.username = username
         self.password = password
         self.db_type = db_type
-                
+
+
 API_URL = 'https://api.webfaction.com/'
 CONF = os.path.expanduser('~/.webfrc')
 
 
 class WebFactionXmlRpc:
-
     '''WebFaction XML-RPC server proxy class'''
 
     def __init__(self, user=None, password=None, machine=None):
@@ -46,14 +46,15 @@ class WebFactionXmlRpc:
             try:
                 user, password = WebFactionXmlRpc.get_config()
             except NotImplementedError as e:
-                self.log.error("You must set a username and password. Either by passing them to __init__ or setting up your config file")
+                self.log.error(
+                    "You must set a username and password. Either by passing them to __init__ or setting up your config file")
                 raise e
 
         self.username = user
         self.password = password
         self.machine = machine
         self.login()
-        
+
     @staticmethod
     def get_config():
         '''Get configuration file from user's directory'''
@@ -63,7 +64,7 @@ class WebFactionXmlRpc:
                 u"  The format is:",
                 u"      username=<username>",
                 u"      password=<password>",
-                ])
+            ])
             raise NotImplementedError(err)
         config = ConfigObj(CONF)
         username = config['username']
@@ -81,7 +82,7 @@ class WebFactionXmlRpc:
         self.session_id, account = self.server.login(self.username, self.password, *extra_args)
 
         self.log.debug("self.session_id %s account %s", self.session_id,
-            account)
+                       account)
 
     def create_app(self, app_name, app_type, autostart, extra_info):
         '''Create new application'''
@@ -89,12 +90,12 @@ class WebFactionXmlRpc:
             extra_info = ''
         try:
             result = self.server.create_app(
-                    self.session_id,
-                    app_name,
-                    app_type,
-                    autostart,
-                    extra_info 
-                    )
+                self.session_id,
+                app_name,
+                app_type,
+                autostart,
+                extra_info
+            )
             self.log.debug(result)
             return True
         except xmlrpclib.Fault:
@@ -108,14 +109,14 @@ class WebFactionXmlRpc:
         '''Create new application'''
         try:
             result = self.server.delete_app(
-                    self.session_id,
-                    app_name
-                    )
+                self.session_id,
+                app_name
+            )
             self.log.debug(result)
         except xmlrpclib.Fault:
             self.log.exception("Error deleting app")
             return 1
-    
+
     def list_apps(self):
         '''List all existing webfaction apps
         https://docs.webfaction.com/xmlrpc-api/apiref.html#method-list_apps
@@ -125,7 +126,7 @@ class WebFactionXmlRpc:
         except xmlrpclib.Fault:
             self.log.exception("Problem listing apps")
             return []
-            
+
     def delete_db(self, name, db_type):
         '''
         Delete database
@@ -136,13 +137,13 @@ class WebFactionXmlRpc:
         @param db_type: mysql or postgres
         @type db_type: string
         '''
-        #XXX: Validate db_type
+        # XXX: Validate db_type
         try:
             result = self.server.delete_db(
-                    self.session_id,
-                    name,
-                    db_type
-                    )
+                self.session_id,
+                name,
+                db_type
+            )
             self.log.debug(result)
         except xmlrpclib.Fault:
             self.log.exception("Error deleting database %s of type %s", name, db_type)
@@ -165,15 +166,15 @@ class WebFactionXmlRpc:
         @rtype: None on success or 1 on failure
         
         '''
-        #XXX: Validate db_type
-        #XXX: Use interactive method to get password?
+        # XXX: Validate db_type
+        # XXX: Use interactive method to get password?
         try:
             result = self.server.create_db(
-                    self.session_id,
-                    name,
-                    db_type,
-                    password
-                    )
+                self.session_id,
+                name,
+                db_type,
+                password
+            )
             self.log.debug(result)
             return True
         except xmlrpclib.Fault:
@@ -182,62 +183,62 @@ class WebFactionXmlRpc:
         except httplib.ResponseNotReady:
             self.log.exception("Response not ready")
             return False
-            
+
     def list_dbs(self):
         try:
             return self.server.list_dbs(self.session_id)
         except xmlrpclib.Fault:
             self.log.exception("Error listing databases")
             return []
-    
+
     def list_db_users(self):
         try:
             return self.server.list_db_users(self.session_id)
         except xmlrpclib.Fault:
             self.log.exception("Error listing database users")
             return []
-    
+
     def create_db_user(self, username, password, db_type):
         try:
             response = self.server.create_db_user(self.session_id, username, password, db_type)
             self.log.debug(response)
             return WebFactionDBUser(username, password, db_type)
-            
+
         except xmlrpclib.Fault:
             self.log.exception("Error creating database user")
             return None
-    
+
     def delete_db_user(self, db_user):
         if not isinstance(db_user, WebFactionDBUser):
             raise ValueError("db_user must be an instance of WebFactionDBUser")
-        
+
         try:
             self.server.delete_db_user(
-                        self.session_id,
-                        db_user.username,
-                        db_user.db_type
-                        )
+                self.session_id,
+                db_user.username,
+                db_user.db_type
+            )
             return True
         except xmlrpclib.Fault:
             self.log.exception("Error deleting database user")
             return False
-            
+
     def grant_db_permissions(self, db_user, database):
         if not isinstance(db_user, WebFactionDBUser):
             raise ValueError("db_user must be an instance of WebFactionDBUser")
-            
+
         try:
             self.server.grant_db_permissions(
-                                    self.session_id,
-                                    db_user.username,
-                                    database,
-                                    db_user.db_type
-                                    )
+                self.session_id,
+                db_user.username,
+                database,
+                db_user.db_type
+            )
             return True
         except xmlrpclib.Fault:
             self.log.exception("Error granting database permissions")
             return False
-            
+
     def create_cronjob(self, line):
         '''
         Create a cronjob
@@ -251,9 +252,9 @@ class WebFactionXmlRpc:
         '''
         try:
             result = self.server.create_cronjob(
-                    self.session_id,
-                    line
-                    )
+                self.session_id,
+                line
+            )
             self.log.debug(result)
         except xmlrpclib.Fault:
             self.log.exception("Error creating cron job")
@@ -272,9 +273,9 @@ class WebFactionXmlRpc:
         '''
         try:
             result = self.server.delete_cronjob(
-                    self.session_id,
-                    line
-                    )
+                self.session_id,
+                line
+            )
             self.log.debug(result)
         except xmlrpclib.Fault:
             self.log.exception("Error deleting cron job")
@@ -310,26 +311,26 @@ class WebFactionXmlRpc:
             https = False
         subdomains = subdomains.split(',')
         print(subdomains)
-        #XXX: Limitation of only one site_app
+        # XXX: Limitation of only one site_app
         site_apps = site_apps.split(',')
         print(site_apps)
         try:
             result = self.server.create_website(
-                    self.session_id,
-                    website_name,
-                    ip,
-                    https,
-                    subdomains,
-                    site_apps
-                    )
+                self.session_id,
+                website_name,
+                ip,
+                https,
+                subdomains,
+                site_apps
+            )
             self.log.debug(result)
         except xmlrpclib.Fault:
             self.log.exception("Error creating website")
             return 1
 
     def create_email(self, email_address, targets, autoresponder_on=False,
-            autoresponder_subject='', autoresponder_message='',
-            autoresponder_from=''):
+                     autoresponder_subject='', autoresponder_message='',
+                     autoresponder_from=''):
         '''
         Create an email address for a mailbox
 
@@ -355,14 +356,14 @@ class WebFactionXmlRpc:
             autoresponder_from = ''
         try:
             result = self.server.create_email(
-                    self.session_id,
-                    email_address,
-                    targets,
-                    autoresponder_on,
-                    autoresponder_subject,
-                    autoresponder_message,
-                    autoresponder_from,
-                    )
+                self.session_id,
+                email_address,
+                targets,
+                autoresponder_on,
+                autoresponder_subject,
+                autoresponder_message,
+                autoresponder_from,
+            )
             self.log.debug(result)
         except xmlrpclib.Fault:
             self.log.exception("Error creating email")
@@ -381,17 +382,17 @@ class WebFactionXmlRpc:
         '''
         try:
             result = self.server.delete_email(
-                    self.session_id,
-                    email_address
-                    )
+                self.session_id,
+                email_address
+            )
             self.log.debug(result)
         except xmlrpclib.Fault:
             self.log.exception("Error deleting email")
             return 1
 
     def create_mailbox(self, mailbox, enable_spam_protection=True, share=False,
-            spam_to_learn_folder='spam_to_learn',
-            ham_to_learn_folder='ham_to_learn'):
+                       spam_to_learn_folder='spam_to_learn',
+                       ham_to_learn_folder='ham_to_learn'):
         '''
         Delete a mailbox
 
@@ -413,18 +414,18 @@ class WebFactionXmlRpc:
         elif enable_spam_protection.lower() == 'false':
             enable_spam_protection = False
         else:
-            self.log.error(\
-                    "Error: enable_spam_protection must be True or False")
+            self.log.error( \
+                "Error: enable_spam_protection must be True or False")
             return 1
         try:
             result = self.server.create_mailbox(
-                    self.session_id,
-                    mailbox,
-                    enable_spam_protection,
-                    share,
-                    spam_to_learn_folder,
-                    ham_to_learn_folder
-                    )
+                self.session_id,
+                mailbox,
+                enable_spam_protection,
+                share,
+                spam_to_learn_folder,
+                ham_to_learn_folder
+            )
             self.log.debug(result)
             print("Password for the new mailbox is: {}".format(result['password']))
         except xmlrpclib.Fault:
@@ -444,9 +445,9 @@ class WebFactionXmlRpc:
         '''
         try:
             result = self.server.delete_mailbox(
-                    self.session_id,
-                    mailbox
-                    )
+                self.session_id,
+                mailbox
+            )
             self.log.debug(result)
         except xmlrpclib.Fault:
             self.log.exception("Error deleting mailbox")
@@ -471,11 +472,11 @@ class WebFactionXmlRpc:
         '''
         try:
             result = self.server.set_apache_acl(
-                    self.session_id,
-                    paths,
-                    permission,
-                    recursive,
-                    )
+                self.session_id,
+                paths,
+                permission,
+                recursive,
+            )
             self.log.debug(result)
         except xmlrpclib.Fault:
             self.log.exception("Error setting apache acl")
@@ -494,9 +495,9 @@ class WebFactionXmlRpc:
         '''
         try:
             result = self.server.system(
-                    self.session_id,
-                    cmd
-                    )
+                self.session_id,
+                cmd
+            )
             print(result)
         except xmlrpclib.Fault:
             self.log.exception("Error running system command %s", cmd)
@@ -534,3 +535,19 @@ class WebFactionXmlRpc:
             self.log.exception("Error listing bandwidth usage")
             return 1
 
+    def list_machines(self, debug=False):
+        '''
+        Get information about the account’s machines. 
+        This method returns an array of structs with the following key-value pairs
+        https://docs.webfaction.com/xmlrpc-api/apiref.html#method-list_machines
+        
+        @returns: Structure returns an array of structs with the following keys: name, operating_system, location, id
+        @rtype: None on success or 1 on failure
+        '''
+        try:
+            result = self.server.list_machines(self.session_id)
+            self.log.debug(result)
+            return result
+        except xmlrpclib.Fault:
+            self.log.exception("Error listing machines")
+            return 1
