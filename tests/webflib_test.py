@@ -2,8 +2,6 @@ import unittest
 from unittest.mock import patch, MagicMock, call
 
 from webfaction.webflib import WebFactionDBUser, WebFactionXmlRpc, API_URL
-from xmlrpc import client as xmlrpclib
-from http import client as httplib
 
 
 class WebflibTest(unittest.TestCase):
