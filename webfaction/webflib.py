@@ -15,7 +15,7 @@ import os.path
 
 try:
     from configobj import ConfigObj
-except:
+except ImportError:
     pass
 
 if sys.version_info[0] > 2:
@@ -128,6 +128,10 @@ class WebFactionXmlRpc:
             self.log.exception("Problem listing apps")
             return []
 
+    def _validate_db_type(self, db_type):
+        assert db_type in ["mysql", "postgres"], \
+        "Invalid db_type '%s' - try mysql or postgres !" % db_type
+
     def delete_db(self, name, db_type):
         """
         Delete database
@@ -138,7 +142,7 @@ class WebFactionXmlRpc:
         @param db_type: mysql or postgres
         @type db_type: string
         """
-        # TODO: Validate db_type
+        self._validate_db_type(db_type)
         try:
             result = self.server.delete_db(
                 self.session_id,
@@ -166,7 +170,7 @@ class WebFactionXmlRpc:
         @returns: Nothing
         @rtype: None on success or 1 on failure
         """
-        # TODO: Validate db_type
+        self._validate_db_type(db_type)
         # TODO: Use interactive method to get password?
         try:
             result = self.server.create_db(
